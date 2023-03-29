@@ -3,15 +3,21 @@ import { FaUserCircle, FaPhone } from "react-icons/fa";
 import { HiMail } from "react-icons/hi";
 import { BiWorld } from "react-icons/bi";
 import { useRouter } from "next/router";
-import { useDispatch } from "react-redux";
-import { set_singleUser } from "@/redux/user/userReducer";
+import { useDispatch, useSelector } from "react-redux";
+import { set_allUser, set_singleUser } from "@/redux/user/userReducer";
 
 const UserCard = ({ data }: any) => {
+  const users = useSelector((state: any) => state.AllUsers);
   const router = useRouter();
   const dispatch = useDispatch();
   const navigateUser = (val: any) => {
     dispatch(set_singleUser(val));
     router.push(`/user/${val.id}`);
+  };
+
+  const removeUser = (userId: number) => {
+    let filterUser = users.filter((val: object) => val.id !== userId);
+    dispatch(set_allUser(filterUser));
   };
 
   return (
@@ -48,7 +54,12 @@ const UserCard = ({ data }: any) => {
         >
           View
         </button>
-        <button className="text-sm px-2 py-1 border border-red-400 text-red-400 hover:text-white hover:bg-red-400 font-poppins transition-all duration-200 ease-in-out rounded-md">
+        <button
+          onClick={() => {
+            removeUser(data.id);
+          }}
+          className="text-sm px-2 py-1 border border-red-400 text-red-400 hover:text-white hover:bg-red-400 font-poppins transition-all duration-200 ease-in-out rounded-md"
+        >
           Remove
         </button>
       </div>
