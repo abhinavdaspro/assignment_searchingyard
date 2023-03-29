@@ -3,11 +3,15 @@ import { FaUserCircle, FaPhone } from "react-icons/fa";
 import { HiMail } from "react-icons/hi";
 import { BiWorld } from "react-icons/bi";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { set_singleUser } from "@/redux/user/userReducer";
 
 const UserCard = ({ data }: any) => {
   const router = useRouter();
-  const navigateUser = (id: string) => {
-    router.push(`/user/${id}`);
+  const dispatch = useDispatch();
+  const navigateUser = (val: any) => {
+    dispatch(set_singleUser(val));
+    router.push(`/user/${val.id}`);
   };
 
   return (
@@ -38,7 +42,7 @@ const UserCard = ({ data }: any) => {
       <div className="flex items-center gap-x-2 mt-auto">
         <button
           onClick={() => {
-            navigateUser(data.id);
+            navigateUser(data);
           }}
           className="ml-auto text-sm px-2 py-1 border border-primary text-primary hover:text-white hover:bg-primary font-poppins transition-all duration-200 ease-in-out rounded-md"
         >
