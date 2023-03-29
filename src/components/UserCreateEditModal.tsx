@@ -1,4 +1,4 @@
-import { set_allUser } from "@/redux/user/userReducer";
+import { set_allUser, set_singleUser } from "@/redux/user/userReducer";
 import { Dialog, Transition } from "@headlessui/react";
 import React, { Fragment, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,7 @@ const UserCreateEditModal = ({ show, setShow, action }: any) => {
   const dispatch = useDispatch();
   const [user, setUser] = useState({
     name: "",
-    userName: "",
+    username: "",
     email: "",
     phone: "",
     website: "",
@@ -20,7 +20,7 @@ const UserCreateEditModal = ({ show, setShow, action }: any) => {
       city: "",
       street: "",
       suite: "",
-      zipCode: "",
+      zipcode: "",
     },
   });
 
@@ -29,25 +29,26 @@ const UserCreateEditModal = ({ show, setShow, action }: any) => {
       setUser((prev) => ({
         ...prev,
         name: singleUser.name,
-        userName: singleUser.username,
+        username: singleUser.username,
         email: singleUser.email,
         phone: singleUser.phone,
         website: singleUser.website,
         company: {
           ...prev.company,
-          name: singleUser.company.name,
+          name: singleUser.company?.name,
         },
         address: {
           ...prev.address,
-          city: singleUser.address.city,
-          street: singleUser.address.street,
-          zipCode: singleUser.address.zipcode,
+          city: singleUser.address?.city,
+          suite: singleUser.address?.suite,
+          street: singleUser.address?.street,
+          zipcode: singleUser.address?.zipcode,
         },
       }));
     }
-  }, [action]);
+  }, [action, singleUser]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e:any) => {
     e.preventDefault();
     switch (action) {
       case "create":
@@ -59,6 +60,15 @@ const UserCreateEditModal = ({ show, setShow, action }: any) => {
         // allUsers.push(user);
         dispatch(set_allUser(finalUsers));
         break;
+      case "edit":{
+
+        let index= allUsers.findIndex((val:any)=> val.id=== singleUser.id)
+        let copyUser= [...allUsers]
+        copyUser.splice(index, 1, {id:singleUser.id, ...user})
+        dispatch(set_allUser(copyUser));
+        dispatch(set_singleUser({id:singleUser.id, ...user}))
+        break;
+      }  
       default:
         break;
     }
@@ -67,23 +77,26 @@ const UserCreateEditModal = ({ show, setShow, action }: any) => {
   };
 
   const cleanUp = () => {
-    setUser((prev) => ({
-      ...prev,
-      name: "",
-      userName: "",
-      email: "",
-      phone: "",
-      website: "",
-      company: {
+    if(action === "create"){
+      setUser((prev) => ({
+        ...prev,
         name: "",
-      },
-      address: {
-        city: "",
-        street: "",
-        suite: "",
-        zipCode: "",
-      },
-    }));
+        username: "",
+        email: "",
+        phone: "",
+        website: "",
+        company: {
+          name: "",
+        },
+        address: {
+          city: "",
+          street: "",
+          suite: "",
+          zipcode: "",
+        },
+      }));
+    }
+
     setShow(false);
   };
 
@@ -150,11 +163,11 @@ const UserCreateEditModal = ({ show, setShow, action }: any) => {
                       <input
                         type="text"
                         className="w-full focus:outline-none h-10 px-3 border border-primary-light rounded-md mt-1"
-                        value={user.userName}
+                        value={user.username}
                         onChange={(e) => {
                           setUser((prev) => ({
                             ...prev,
-                            userName: e.target.value,
+                            username: e.target.value,
                           }));
                         }}
                         required
@@ -182,7 +195,7 @@ const UserCreateEditModal = ({ show, setShow, action }: any) => {
                         Phone
                       </p>
                       <input
-                        type="number"
+                        type="text"
                         className="w-full focus:outline-none h-10 px-3 border border-primary-light rounded-md mt-1"
                         min={"10"}
                         value={user.phone}
@@ -301,13 +314,13 @@ const UserCreateEditModal = ({ show, setShow, action }: any) => {
                       <input
                         type="text"
                         className="w-full focus:outline-none h-10 px-3 border border-primary-light rounded-md mt-1"
-                        value={user.address.zipCode}
+                        value={user.address.zipcode}
                         onChange={(e) => {
                           setUser((prev) => ({
                             ...prev,
                             address: {
                               ...prev.address,
-                              zipCode: e.target.value,
+                              zipcode: e.target.value,
                             },
                           }));
                         }}
@@ -320,13 +333,13 @@ const UserCreateEditModal = ({ show, setShow, action }: any) => {
                     <button
                       type="button"
                       onClick={() => cleanUp()}
-                      className="ml-auto text-red-400 bg-white border border-red-400 h-8 px-3 rounded-md hover:shadow-lg "
+                      className="ml-auto text-red-400 bg-white border border-red-400 h-8 px-3 rounded-md hover:shadow-lg transition-all duration-200 ease-in-out"
                     >
                       Cancel
                     </button>
                     <button
                       type="submit"
-                      className="text-white bg-primary h-8 px-3 rounded-md hover:shadow-lg "
+                      className="text-white bg-primary h-8 px-3 rounded-md hover:shadow-lg transition-all duration-200 ease-in-out"
                     >
                       Submit
                     </button>

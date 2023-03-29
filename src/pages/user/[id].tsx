@@ -1,14 +1,40 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { FaUserCircle, FaUserEdit } from "react-icons/fa";
 import { HiArrowLeft } from "react-icons/hi";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import UserCreateEditModal from "@/components/UserCreateEditModal";
+import axios from "axios";
+import { set_singleUser } from "@/redux/user/userReducer";
 
 const UserOverView = () => {
   const router = useRouter();
   const singleUser = useSelector((state: any) => state.SingleUser);
+  const [showModal, setShowModal]= useState(false)
+  const dispatch= useDispatch();
+
+  useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
+    let url = `https://jsonplaceholder.typicode.com/users/${router.query.id}`;
+    if (Object.keys(singleUser).length === 0) {
+      axios
+        .get(url, { signal })
+        .then(({ data }) => {
+          dispatch(set_singleUser(data));
+        })
+        .catch((err) => {
+          if (err.name !== "CanceledError") console.error("err---", err);
+        });
+    }
+    return () => {
+      controller.abort();
+    };
+  }, [router.isReady]);
+
   return (
     <>
+      <UserCreateEditModal show={showModal} setShow={setShowModal} action={"edit"}/>
       <button onClick={() => router.back()}>
         <HiArrowLeft className="h-6 w-6 text-primary" />
       </button>
@@ -18,13 +44,15 @@ const UserOverView = () => {
           <p className="pl-3 text-primary font-poppins text-xl">
             {singleUser?.name}
           </p>
-          <button className="flex items-center ml-auto text-primary bg-white hover:bg-primary hover:text-white hover:shadow-lg hover:-translate-y-1 font-poppins text-base border border-primary px-2 py-1 rounded-md transition-all duration-200 ease-in-out">
+          <button 
+          onClick={()=>{setShowModal(true)}}
+          className="flex items-center ml-auto text-primary bg-white hover:bg-primary hover:text-white hover:shadow-lg hover:-translate-y-1 font-poppins text-base border border-primary px-2 py-1 rounded-md transition-all duration-200 ease-in-out">
             <FaUserEdit className="h-4 w-4 mr-3" />
             Edit
           </button>
         </div>
 
-        <div className="grid grid-cols-2 mt-5 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 mt-5 gap-2">
           <div className="flex flex-col gap-y-2">
             <div className="flex items-center">
               <p className="text-base font-poppins text-slate-500">Username:</p>
@@ -35,10 +63,6 @@ const UserOverView = () => {
             <div className="flex items-center">
               <p className="text-base font-poppins text-slate-500">Email:</p>
               <p className="text-base font-poppins ml-2">{singleUser?.email}</p>
-            </div>
-            <div className="flex items-center">
-              <p className="text-base font-poppins text-slate-500">Phone:</p>
-              <p className="text-base font-poppins ml-2">{singleUser?.phone}</p>
             </div>
             <div className="flex items-center">
               <p className="text-base font-poppins text-slate-500">Phone:</p>
