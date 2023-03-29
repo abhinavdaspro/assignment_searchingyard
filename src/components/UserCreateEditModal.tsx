@@ -200,12 +200,10 @@ const UserCreateEditModal = ({ show, setShow, action }: any) => {
                         min={"10"}
                         value={user.phone}
                         onChange={(e) => {
-                          if (e.target.value.length < 11) {
                             setUser((prev) => ({
                               ...prev,
                               phone: e.target.value,
                             }));
-                          }
                         }}
                         required
                       />
