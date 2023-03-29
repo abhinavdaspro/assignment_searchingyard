@@ -8,6 +8,22 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    screens: {
+      xxxs: "410px",
+      xxs: "450px",
+      xs: "520px",
+      nav_logo: "550px",
+      sm: "640px",
+      md: "768px",
+      base: "870px",
+      md_link: "980px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+      "3xl": "1650px",
+      "4xl": "1850px",
+      "5xl": "2140px",
+    },
     fontFamily: {
       'poppins': ['Poppins', 'sans-serif'],
       'mont': ['Montserrat', 'sans-serif'],
