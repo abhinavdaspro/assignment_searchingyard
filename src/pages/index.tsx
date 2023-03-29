@@ -4,7 +4,7 @@ import LoadingSkeleton from "@/components/LoadingSkeleton";
 import { set_allUser } from "@/redux/user/userReducer";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { IoPersonAdd } from "react-icons/io5";
+import {MdPersonAddAlt1} from "react-icons/md"
 import { useDispatch, useSelector } from "react-redux";
 import UserCreateEditModal from "@/components/UserCreateEditModal";
 
@@ -45,9 +45,9 @@ export default function Home() {
           onClick={() => {
             setShowModal(true);
           }}
-          className="rounded-md bg-white ml-auto px-4 py-1 border border-primary text-primary flex items-center hover:text-white hover:bg-primary font-poppins hover:-translate-y-1 hover:shadow-lg transition-all duration-200 ease-in-out"
+          className="rounded-md bg-primary ml-auto px-4 py-1 text-white flex items-center  font-poppins hover:-translate-y-1 hover:shadow-lg transition-all duration-200 ease-in-out"
         >
-          <IoPersonAdd className="h-3 w-3 mr-3" /> Add User
+          <MdPersonAddAlt1 className="h-4 w-4 mr-3" /> Add User
         </button>
       </div>
       <div className="w-full grid grid-cols-1 xxs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-10">
