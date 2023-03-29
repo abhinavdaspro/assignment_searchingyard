@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import UserCreateEditModal from "@/components/UserCreateEditModal";
 import axios from "axios";
 import { set_singleUser } from "@/redux/user/userReducer";
+import { Header } from "@/components/Header";
 
 const UserOverView = () => {
   const router = useRouter();
@@ -34,6 +35,7 @@ const UserOverView = () => {
 
   return (
     <>
+      <Header pageName={'User Overview'}/>
       <UserCreateEditModal show={showModal} setShow={setShowModal} action={"edit"}/>
       <button onClick={() => router.back()}>
         <HiArrowLeft className="h-6 w-6 text-primary" />
