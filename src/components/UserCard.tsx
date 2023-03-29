@@ -1,16 +1,52 @@
 import React from "react";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaPhone } from "react-icons/fa";
+import { HiMail } from "react-icons/hi";
+import { BiWorld } from "react-icons/bi";
+import { useRouter } from "next/router";
 
-type TProps = {
-  data: object;
-};
+const UserCard = ({ data }: any) => {
+  const router = useRouter();
+  const navigateUser = (id: string) => {
+    router.push(`/user/${id}`);
+  };
 
-const UserCard = ({ data }: TProps) => {
   return (
-    <div className="w-full bg-white shadow-md rounded-xl p-6 hover:shadow-lg transition-all duration-150 ease-out cursor-pointer">
-      <div className="flex items-center">
+    <div className="w-full flex flex-col bg-white shadow-md rounded-xl p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-200 ease-out cursor-pointer">
+      <div className="flex items-center pb-4">
         <FaUserCircle className="h-6 w-6 text-slate-600" />
         <p className="pl-3 text-primary font-poppins text-base">{data.name}</p>
+      </div>
+      <div className="flex items-center mb-2">
+        <span>
+          <HiMail className="h-4 w-4 text-slate-600 mr-3" />
+        </span>
+        <p className="text-sm font-light break-all">{data.email}</p>
+      </div>
+      <div className="flex items-center mb-2">
+        <span>
+          <BiWorld className="h-4 w-4 text-slate-600 mr-3" />
+        </span>
+        <p className="text-sm font-light">{data.website}</p>
+      </div>
+      <div className="flex items-center mb-4">
+        <span>
+          <FaPhone className="h-4 w-4 text-slate-600 mr-3" />
+        </span>
+        <p className="text-sm font-light">{data.phone}</p>
+      </div>
+
+      <div className="flex items-center gap-x-2 mt-auto">
+        <button
+          onClick={() => {
+            navigateUser(data.id);
+          }}
+          className="ml-auto text-sm px-2 py-1 border border-primary text-primary hover:text-white hover:bg-primary font-poppins transition-all duration-200 ease-in-out rounded-md"
+        >
+          View
+        </button>
+        <button className="text-sm px-2 py-1 border border-red-400 text-red-400 hover:text-white hover:bg-red-400 font-poppins transition-all duration-200 ease-in-out rounded-md">
+          Remove
+        </button>
       </div>
     </div>
   );
