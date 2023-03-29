@@ -16,7 +16,7 @@ const UserCard = ({ data }: any) => {
   };
 
   const removeUser = (userId: number) => {
-    let filterUser = users.filter((val: object) => val.id !== userId);
+    let filterUser = users.filter((val:any) => val.id !== userId);
     dispatch(set_allUser(filterUser));
   };
 
