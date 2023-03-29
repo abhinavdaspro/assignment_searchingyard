@@ -1,7 +1,7 @@
 import React from "react";
 
 const LoadingSkeleton = () => {
-  const arr = new Array(4);
+  const arr = [1,2,3,4];
   return (
     <>
       {arr.map((val, i) => {

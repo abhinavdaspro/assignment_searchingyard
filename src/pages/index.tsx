@@ -52,7 +52,7 @@ export default function Home() {
         </button>
       </div>
       <div className="w-full grid grid-cols-1 xxs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pb-10">
-        {loading && <LoadingSkeleton />}
+        {true && <LoadingSkeleton />}
 
         {users.length > 0 &&
           users.map((val: object, i: number) => {
